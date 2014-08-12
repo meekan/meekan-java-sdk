@@ -1,0 +1,14 @@
+{
+	"exchange": 
+		{"username": "USERNAME_OF_EXCHANGE",
+		 "email": "EMAIL_OF_EXCHANGE", 
+		 "password":"PASSWORD", 
+		 "url":"URL OF asmx file"
+		 },
+		 
+	"icloud": 
+		{"username": "USER_NAME_OF_ICLOUD",
+		 "password":"PASSWORD_OF_ICLOUD", 
+		 "icloudAppleId":"icloudAppleId"
+		 }
+}
