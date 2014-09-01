@@ -36,9 +36,7 @@ import com.meekan.api.utils.Utils;
 public class MeekanApi {
 
 	public static final String UTF_8 = "UTF-8";
-	// dontcommit
-	// public static final String API_URL = "https://playground.meekan.com/";
-	public static final String API_URL = "http://localhost:8080/";
+	public static final String API_URL = "https://playground.meekan.com/";
 	public static URI API_URI;
 	static {
 		try {
