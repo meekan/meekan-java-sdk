@@ -7,9 +7,9 @@ Please check the documentation to all the methods over [here](http://playground.
 
 You will need except of the sdk to use the following jars.
 
-jackson-core-2.3.3
-jackson-annotations-2.3.3
-jackson-databind-2.3.3
+- jackson-core-2.3.3
+- jackson-annotations-2.3.3
+- jackson-databind-2.3.3
 
 You can find them over [here](http://wiki.fasterxml.com/JacksonDownload)
 
