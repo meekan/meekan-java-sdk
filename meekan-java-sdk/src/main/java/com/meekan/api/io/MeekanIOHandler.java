@@ -39,7 +39,7 @@ public class MeekanIOHandler implements IOHandler {
 		this(apiKey, 0);
 	}
 
-	public MeekanIOHandler(String apiKey, int timeoutInMillis) throws URISyntaxException {
+	public MeekanIOHandler(String apiKey, int timeoutInMillis) {
 		this.apiKey = apiKey;
 		this.timeoutInMillis = timeoutInMillis;
 		cookieManager = MeekanCookieManager.getInstance();

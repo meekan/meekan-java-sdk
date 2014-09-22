@@ -2,6 +2,7 @@ package com.meekan.api.io;
 
 import com.meekan.api.ApiRequestResponse;
 import com.meekan.api.params.ExchangeAuthenticate;
+import com.meekan.api.params.GoogleAuthenticate;
 import com.meekan.api.params.ICloudAuthenticate;
 import com.meekan.api.params.MeekanSessionCookies;
 
@@ -27,9 +28,12 @@ public interface AuthHandler {
 	 */
 	public ApiRequestResponse exchangeAuthenticate(ExchangeAuthenticate authenticate);
 
+	public ApiRequestResponse googleAuthenticate(GoogleAuthenticate googleAuthenticate);
+
 	/**
 	 * @param cookies
 	 *            - MeeekanCookies that came from other place (like webview)
 	 */
 	public void cookiesAuthenticate(MeekanSessionCookies cookies);
+
 }

@@ -25,6 +25,7 @@ import com.meekan.api.io.MeekanIOHandler;
 import com.meekan.api.params.AccountAuth;
 import com.meekan.api.params.Authenticate;
 import com.meekan.api.params.ExchangeAuthenticate;
+import com.meekan.api.params.GoogleAuthenticate;
 import com.meekan.api.params.ICloudAuthenticate;
 import com.meekan.api.params.MeekanSessionCookies;
 import com.meekan.api.params.MeetingParam;
@@ -36,7 +37,9 @@ import com.meekan.api.utils.Utils;
 public class MeekanApi {
 
 	public static final String UTF_8 = "UTF-8";
-	public static final String API_URL = "https://playground.meekan.com/";
+	// dontcommit
+	public static final String API_URL = "http://10.0.3.2:8080/";
+	// public static final String API_URL = "https://playground.meekan.com/";
 	public static URI API_URI;
 	static {
 		try {
@@ -59,15 +62,15 @@ public class MeekanApi {
 		this.accountAuth = new AccountAuth();
 	}
 
-	public MeekanApi(String apiKey) throws URISyntaxException {
+	public MeekanApi(String apiKey) {
 		this(apiKey, null);
 	}
 
-	public MeekanApi(String apiKey, MeekanSessionCookies cookies) throws URISyntaxException {
+	public MeekanApi(String apiKey, MeekanSessionCookies cookies) {
 		this(apiKey, cookies, 0);
 	}
 
-	public MeekanApi(String apiKey, MeekanSessionCookies cookies, int timeoutInMillis) throws URISyntaxException {
+	public MeekanApi(String apiKey, MeekanSessionCookies cookies, int timeoutInMillis) {
 		this(new MeekanIOHandler(apiKey, timeoutInMillis), null);
 		this.authHandler = new MeekanAuthHandler(this.ioHandler);
 		if (cookies != null) {
@@ -80,6 +83,8 @@ public class MeekanApi {
 	}
 
 	/**
+	 * wa
+	 * 
 	 * API Request
 	 * 
 	 * @param method
@@ -111,6 +116,13 @@ public class MeekanApi {
 			}
 		}
 		return HttpUtils.doApiRequest(method, path, params, ioHandler);
+	}
+
+	public ApiRequestResponse hello(String client, String version) throws MeekanApiException {
+		Map<String, Collection<String>> params = new HashMap<String, Collection<String>>();
+		params.put("client", Collections.singleton(client));
+		params.put("version", Collections.singleton(version));
+		return doApiRequest(ApiMethod.GET, "rest/hello", params);
 	}
 
 	/**
@@ -241,6 +253,14 @@ public class MeekanApi {
 		params.put("max_date", Collections.singleton(String.valueOf(end)));
 		return doApiRequest(ApiMethod.GET, String.format("rest/accounts/%s/freebusy", accountId), params);
 
+	}
+
+	public ApiRequestResponse googleAuthenticate(GoogleAuthenticate googleAuthenticate) {
+		ApiRequestResponse response = authHandler.googleAuthenticate(googleAuthenticate);
+		if (response.getMeta().getCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+			response = insertNewAuth(googleAuthenticate);
+		}
+		return response;
 	}
 
 	public ApiRequestResponse exchangeAuthenticate(ExchangeAuthenticate exchangeAuthenticate) {

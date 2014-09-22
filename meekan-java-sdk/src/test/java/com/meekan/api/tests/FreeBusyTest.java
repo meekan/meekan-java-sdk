@@ -15,7 +15,7 @@ import com.meekan.api.ApiRequestResponse;
 import com.meekan.api.MeekanApi;
 import com.meekan.api.MeekanApiException;
 import com.meekan.api.entities.User;
-import com.meekan.api.params.ICloudAuthenticate;
+import com.meekan.api.params.ICloudOldAuthenticate;
 import com.meekan.api.params.MeetingParam;
 import com.meekan.api.utils.Utils;
 
@@ -30,7 +30,7 @@ public class FreeBusyTest {
 
 	@Test
 	public void testGetICloudFreeBusy() throws MeekanApiException, JsonParseException, JsonMappingException, IOException {
-		ICloudAuthenticate iCloudAuthenticate = TestUtils.getICloudAuthenticate();
+		ICloudOldAuthenticate iCloudAuthenticate = TestUtils.getICloudAuthenticate();
 		String email = iCloudAuthenticate.getICloudAppleId();
 		ApiRequestResponse authResponse = meekanApi.icloudAuthenticate(iCloudAuthenticate);
 

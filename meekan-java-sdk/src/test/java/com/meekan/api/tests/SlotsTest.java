@@ -19,7 +19,7 @@ import com.meekan.api.MeekanApi;
 import com.meekan.api.MeekanApiException;
 import com.meekan.api.entities.Slot;
 import com.meekan.api.entities.User;
-import com.meekan.api.params.ICloudAuthenticate;
+import com.meekan.api.params.ICloudOldAuthenticate;
 import com.meekan.api.params.MeetingParam;
 import com.meekan.api.utils.SerializablePair;
 import com.meekan.api.utils.Utils;
@@ -34,7 +34,7 @@ public class SlotsTest {
 	@Before
 	public void setUp() throws Exception {
 		meekanApi = new MeekanApi(TestUtils.API_KEY);
-		ICloudAuthenticate iCloudAuthenticate = TestUtils.getICloudAuthenticate();
+		ICloudOldAuthenticate iCloudAuthenticate = TestUtils.getICloudAuthenticate();
 		email = iCloudAuthenticate.getICloudAppleId();
 		ApiRequestResponse authResponse = meekanApi.icloudAuthenticate(iCloudAuthenticate);
 		Assert.assertEquals(HttpURLConnection.HTTP_OK, (int) authResponse.getMeta().getCode());

@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.codec.binary.Base64;
+import org.w3c.dom.Document;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.meekan.api.ApiRequestResponse;
 import com.meekan.api.MeekanApi;
@@ -23,7 +26,10 @@ import com.meekan.api.MeekanApiException;
 import com.meekan.api.ResultMeta;
 import com.meekan.api.params.Authenticate;
 import com.meekan.api.params.ExchangeAuthenticate;
+import com.meekan.api.params.GoogleAuthenticate;
 import com.meekan.api.params.ICloudAuthenticate;
+import com.meekan.api.params.ICloudNewAuthenticate;
+import com.meekan.api.params.ICloudOldAuthenticate;
 import com.meekan.api.params.ICloudServerEntity;
 import com.meekan.api.params.MeekanSessionCookies;
 import com.meekan.api.utils.HttpUtils;
@@ -96,7 +102,7 @@ public class MeekanAuthHandler implements AuthHandler {
 
 	}
 
-	private ICloudServerEntity icloudAuth(ICloudAuthenticate icloudAuthenticate) throws MalformedURLException, IOException {
+	private ICloudServerEntity icloudAuth(ICloudOldAuthenticate icloudAuthenticate) throws MalformedURLException, IOException {
 		String url = "https://setup.icloud.com/setup/ws/1/login";
 		URL aUrl = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) aUrl.openConnection();
@@ -117,9 +123,6 @@ public class MeekanAuthHandler implements AuthHandler {
 			String responseMessage = connection.getResponseMessage();
 			if (code == HttpURLConnection.HTTP_OK) {
 				return parseICloudResponse(connection, requestProperties);
-			} else {
-				System.out.println("ERROR! - " + code);
-				System.out.println(responseMessage);
 			}
 		} finally {
 			connection.disconnect();
@@ -143,25 +146,90 @@ public class MeekanAuthHandler implements AuthHandler {
 	}
 
 	/**
-	 * @see com.meekan.api.io.AuthHandler#icloudAuthenticate(com.meekan.api.params.ICloudAuthenticate)
+	 * @see com.meekan.api.io.AuthHandler#icloudAuthenticate(com.meekan.api.params.ICloudOldAuthenticate)
 	 */
 	@Override
 	public ApiRequestResponse icloudAuthenticate(ICloudAuthenticate authenticate) {
+		if (authenticate instanceof ICloudOldAuthenticate) {
+			return oldIcloudAuth(authenticate);
+		} else {
+			return newIcloudAuth((ICloudNewAuthenticate) authenticate);
+
+		}
+	}
+
+	private ApiRequestResponse newIcloudAuth(ICloudNewAuthenticate authenticate) {
+		String url = "https://setup.icloud.com/setup/get_account_settings";
+		HttpURLConnection connection = null;
+		try {
+			URL aUrl = new URL(url);
+			connection = (HttpURLConnection) aUrl.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setRequestProperty("Accept", "*/*");
+			connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+			connection.setRequestProperty("Host", "setup.icloud.com");
+			connection.setRequestProperty("User-Agent", "Opera/9.52 (X11; Linux i686; U; en)");
+			connection.setRequestProperty("Accept-Language", "en-US,en;q=0.8,he;q=0.6,it;q=0.4");
+			String encodeBase64 = new String(Base64.encodeBase64((authenticate.getIdentifier() + ":" + authenticate.getPassword()).getBytes()));
+			connection.setRequestProperty("Authorization", "Basic " + encodeBase64);
+			connection.setRequestProperty("Content-Length", "0");
+			connection.setRequestProperty("Connection", "keep-alive");
+
+			connection.connect();
+
+			int code = connection.getResponseCode();
+			String responseMessage = connection.getResponseMessage();
+
+			if (code == HttpURLConnection.HTTP_OK) {
+				Map<String, List<String>> headerFields = connection.getHeaderFields();
+				InputStream inputStream = connection.getInputStream();
+				if (headerFields.get("Content-Encoding") != null && "gzip".equals(headerFields.get("Content-Encoding").get(0))) {
+					inputStream = new GZIPInputStream(inputStream);
+				}
+				String responseData = MeekanIOHandler.readStream(inputStream);
+				Document loadXMLFromString = Utils.loadXMLFromString(responseData);
+				String dsprsid = loadXMLFromString.getElementsByTagName("string").item(8).getTextContent();
+				String mme = loadXMLFromString.getElementsByTagName("string").item(1).getTextContent();
+				authenticate.setMmeAuthAndDsprsid(mme, dsprsid);
+
+				return authenticate(authenticate);
+			} else {
+				return new ApiRequestResponse(new ResultMeta(500, "", responseMessage), null);
+			}
+
+		} catch (MeekanApiException e) {
+			return new ApiRequestResponse(new ResultMeta(500, "", e.getMessage()), null);
+		} catch (URISyntaxException e) {
+			return new ApiRequestResponse(new ResultMeta(400, "", "Malformed URL"), null);
+		} catch (IOException e) {
+			return new ApiRequestResponse(new ResultMeta(500, "", e.getMessage()), null);
+		} catch (Exception e) {
+			return new ApiRequestResponse(new ResultMeta(500, "", e.getMessage()), null);
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
+
+	private ApiRequestResponse oldIcloudAuth(ICloudAuthenticate authenticate) {
+		ICloudOldAuthenticate icloudOldAuthenticate = (ICloudOldAuthenticate) authenticate;
 		ICloudServerEntity res = null;
 		try {
 
 			res = validate();
 			if (res == null) {
-				res = icloudAuth(authenticate);
+				res = icloudAuth(icloudOldAuthenticate);
 			}
 
 			if (res == null) {
 				res = validate();
 			}
 			if (res != null) {
-				authenticate.setiCloudServerEntity(res);
+				icloudOldAuthenticate.setiCloudServerEntity(res);
 			}
-			return authenticate(authenticate);
+			return authenticate(icloudOldAuthenticate);
 
 		} catch (MalformedURLException ignored) {
 			return new ApiRequestResponse(new ResultMeta(400, "", "Malformed URL"), null);
@@ -197,6 +265,17 @@ public class MeekanAuthHandler implements AuthHandler {
 	public void cookiesAuthenticate(MeekanSessionCookies cookies) {
 		cookieManager.getCookieStore().add(MeekanApi.API_URI, new HttpCookie("session", cookies.getSession()));
 		cookieManager.getCookieStore().add(MeekanApi.API_URI, new HttpCookie("session_name", cookies.getSessionName()));
+	}
+
+	@Override
+	public ApiRequestResponse googleAuthenticate(GoogleAuthenticate googleAuthenticate) {
+		Map<String, Collection<String>> callParams = new HashMap<String, Collection<String>>();
+		callParams.put("code", Collections.singleton(googleAuthenticate.getCode()));
+		try {
+			return HttpUtils.doApiRequest(ApiMethod.GET, "social_login/google_oauth2/complete", callParams, ioHandler);
+		} catch (MeekanApiException e) {
+			return new ApiRequestResponse(new ResultMeta(500, "", e.getMessage()), null);
+		}
 	}
 
 }

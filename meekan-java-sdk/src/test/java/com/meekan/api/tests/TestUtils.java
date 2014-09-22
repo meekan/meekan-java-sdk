@@ -20,7 +20,7 @@ import com.meekan.api.MeekanApiException;
 import com.meekan.api.entities.Account;
 import com.meekan.api.entities.User;
 import com.meekan.api.params.ExchangeAuthenticate;
-import com.meekan.api.params.ICloudAuthenticate;
+import com.meekan.api.params.ICloudOldAuthenticate;
 import com.meekan.api.utils.Utils;
 
 public class TestUtils {
@@ -69,9 +69,9 @@ public class TestUtils {
 				.asText(), exchangeNode.get("url").asText());
 	}
 
-	public static ICloudAuthenticate getICloudAuthenticate() throws JsonProcessingException, IOException {
+	public static ICloudOldAuthenticate getICloudAuthenticate() throws JsonProcessingException, IOException {
 		JsonNode icloudNode = Utils.getJSONObjectMapper().readTree(new File(AUTH_CONFIG_FILE)).get("icloud");
-		return new ICloudAuthenticate(icloudNode.get("username").asText(), icloudNode.get("password").asText(), icloudNode.get("icloudAppleId")
+		return new ICloudOldAuthenticate(icloudNode.get("username").asText(), icloudNode.get("password").asText(), icloudNode.get("icloudAppleId")
 				.asText());
 	}
 }
