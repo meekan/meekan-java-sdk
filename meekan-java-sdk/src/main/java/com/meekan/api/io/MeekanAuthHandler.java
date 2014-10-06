@@ -271,6 +271,7 @@ public class MeekanAuthHandler implements AuthHandler {
 	public ApiRequestResponse googleAuthenticate(GoogleAuthenticate googleAuthenticate) {
 		Map<String, Collection<String>> callParams = new HashMap<String, Collection<String>>();
 		callParams.put("code", Collections.singleton(googleAuthenticate.getCode()));
+		callParams.put("gv", Collections.singleton("mobile"));
 		try {
 			return HttpUtils.doApiRequest(ApiMethod.GET, "social_login/google_oauth2/complete", callParams, ioHandler);
 		} catch (MeekanApiException e) {

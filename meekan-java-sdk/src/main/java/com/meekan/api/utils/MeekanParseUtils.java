@@ -44,14 +44,19 @@ public class MeekanParseUtils {
 			MapLikeType constructMapLikeType = Utils.getJSONObjectMapper().getTypeFactory()
 					.constructMapLikeType(HashMap.class, String.class, String.class);
 			try {
-				String data = response.getResponse().get("data").toString();
-				return Utils.getJSONObjectMapper().readValue(data, constructMapLikeType);
+				if (response.getResponse().has("data")) {
+
+					String data = response.getResponse().get("data").toString();
+					return Utils.getJSONObjectMapper().readValue(data, constructMapLikeType);
+				}
 			} catch (Exception e) {
 				throw new MeekanApiException(e);
 			}
 		} else {
 			throw new MeekanApiException(response.getMeta().getErrorDetail());
 		}
+
+		return new HashMap<String, String>();
 
 	}
 
