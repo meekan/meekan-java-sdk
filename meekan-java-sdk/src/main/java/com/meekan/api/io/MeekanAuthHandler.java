@@ -17,8 +17,9 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.codec.binary.Base64;
-import org.w3c.dom.Document;
 
+import com.dd.plist.NSDictionary;
+import com.dd.plist.PropertyListParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.meekan.api.ApiRequestResponse;
 import com.meekan.api.MeekanApi;
@@ -187,11 +188,16 @@ public class MeekanAuthHandler implements AuthHandler {
 				if (headerFields.get("Content-Encoding") != null && "gzip".equals(headerFields.get("Content-Encoding").get(0))) {
 					inputStream = new GZIPInputStream(inputStream);
 				}
-				String responseData = MeekanIOHandler.readStream(inputStream);
-				Document loadXMLFromString = Utils.loadXMLFromString(responseData);
-				String dsprsid = loadXMLFromString.getElementsByTagName("string").item(8).getTextContent();
-				String mme = loadXMLFromString.getElementsByTagName("string").item(1).getTextContent();
+				NSDictionary rootDict = (NSDictionary) PropertyListParser.parse(inputStream);
+				HashMap<String, Object> javaObject = (HashMap<String, Object>) rootDict.toJavaObject();
+				HashMap<String, Object> tokens = (HashMap<String, Object>) javaObject.get("tokens");
+				String mme = (String) tokens.get("mmeAuthToken");
+				HashMap<String, Object> appleAccountInfo = (HashMap<String, Object>) javaObject.get("appleAccountInfo");
+				String dsprsid = (String) appleAccountInfo.get("dsPrsID");
+				String appleId = (String) appleAccountInfo.get("appleId");
+
 				authenticate.setMmeAuthAndDsprsid(mme, dsprsid);
+				authenticate.setAppleId(appleId);
 
 				return authenticate(authenticate);
 			} else {

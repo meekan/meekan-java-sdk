@@ -6,13 +6,13 @@ import java.util.Map;
 public class ICloudNewAuthenticate implements ICloudAuthenticate<String> {
 	public static final String ICLOUD = "icloud";
 
-	private String iCloudAppleId;
+	private String appleId;
 	private String password;
 	private String mmeAuth;
 	private String dsprsid;
 
-	public ICloudNewAuthenticate(String iCloudAppleId, String password) {
-		this.iCloudAppleId = iCloudAppleId;
+	public ICloudNewAuthenticate(String appleId, String password) {
+		this.appleId = appleId;
 		this.password = password;
 	}
 
@@ -26,13 +26,13 @@ public class ICloudNewAuthenticate implements ICloudAuthenticate<String> {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("mme", mmeAuth);
 		params.put("dsprsid", dsprsid);
-		params.put("iCloudAppleId", iCloudAppleId);
+		params.put("appleId", appleId);
 		return params;
 	}
 
 	@Override
 	public String getIdentifier() {
-		return iCloudAppleId;
+		return appleId;
 	}
 
 	@Override
@@ -40,8 +40,12 @@ public class ICloudNewAuthenticate implements ICloudAuthenticate<String> {
 		return ICLOUD;
 	}
 
-	public String getiCloudAppleId() {
-		return iCloudAppleId;
+	public String getAppleId() {
+		return appleId;
+	}
+
+	public void setAppleId(String appleId) {
+		this.appleId = appleId;
 	}
 
 	public String getPassword() {
@@ -54,10 +58,6 @@ public class ICloudNewAuthenticate implements ICloudAuthenticate<String> {
 
 	public String getDsprsid() {
 		return dsprsid;
-	}
-
-	public void setiCloudAppleId(String iCloudAppleId) {
-		this.iCloudAppleId = iCloudAppleId;
 	}
 
 	public void setPassword(String password) {
