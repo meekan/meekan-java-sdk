@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.meekan.api.ApiRequestResponse;
@@ -25,21 +26,28 @@ public class MeekanParseUtils {
 	}
 
 	public static List<Slot> getSlots(ApiRequestResponse slotsResponse) {
-		CollectionLikeType constructCollectionLikeType = Utils.getJSONObjectMapper().getTypeFactory()
-				.constructCollectionType(ArrayList.class, Slot.class);
-		try {
-			return Utils.getJSONObjectMapper().readValue(slotsResponse.getResponse().get("data").toString(), constructCollectionLikeType);
-		} catch (JsonParseException e) {
-		} catch (JsonMappingException e) {
-		} catch (IOException e) {
+		if (slotsResponse.getMeta().getCode() == HttpURLConnection.HTTP_OK) {
+
+			CollectionLikeType constructCollectionLikeType = Utils.getJSONObjectMapper().getTypeFactory()
+					.constructCollectionType(ArrayList.class, Slot.class);
+			try {
+				JsonNode jsonNode = slotsResponse.getResponse().get("data");
+				if (jsonNode != null) {
+					return Utils.getJSONObjectMapper().readValue(jsonNode.toString(), constructCollectionLikeType);
+				}
+			} catch (JsonParseException e) {
+			} catch (JsonMappingException e) {
+			} catch (IOException e) {
+			}
 		}
 
 		return null;
 	}
 
-	public static HashMap<String, String> getIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts) throws MeekanApiException {
+	public static HashMap<String, String> uploadContactsAndGetIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts)
+			throws MeekanApiException {
 
-		ApiRequestResponse response = meekanApi.getIdsToAccounts(idsOfAccounts);
+		ApiRequestResponse response = meekanApi.uploadContacts(idsOfAccounts);
 		if (HttpURLConnection.HTTP_OK == (int) response.getMeta().getCode()) {
 			MapLikeType constructMapLikeType = Utils.getJSONObjectMapper().getTypeFactory()
 					.constructMapLikeType(HashMap.class, String.class, String.class);
@@ -62,16 +70,19 @@ public class MeekanParseUtils {
 
 	public static String findAccountId(ApiRequestResponse authResponse, String email) {
 		try {
-			User user = Utils.getJSONObjectMapper().readValue(authResponse.getResponse().get("data").toString(), User.class);
-			List<Account> accounts = user.getAccounts();
-			String accountId = null;
-			for (Account account : accounts) {
-				if (email.equals(account.getIdentifier())) {
-					accountId = account.getId();
-					break;
+			if (authResponse.getMeta().getCode() == HttpURLConnection.HTTP_OK) {
+
+				User user = Utils.getJSONObjectMapper().readValue(authResponse.getResponse().get("data").toString(), User.class);
+				List<Account> accounts = user.getAccounts();
+				String accountId = null;
+				for (Account account : accounts) {
+					if (email.equals(account.getIdentifier())) {
+						accountId = account.getId();
+						break;
+					}
 				}
+				return accountId;
 			}
-			return accountId;
 		} catch (JsonParseException e) {
 		} catch (JsonMappingException e) {
 		} catch (IOException e) {
