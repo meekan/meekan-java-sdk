@@ -8,6 +8,16 @@ public class Account implements MeekanEntity {
 	private String type;
 	private String id;
 
+	public Account() {
+	}
+
+	public Account(String identifier, String name, String type, String id) {
+		this.identifier = identifier;
+		this.name = name;
+		this.type = type;
+		this.id = id;
+	}
+
 	public String getIdentifier() {
 		return identifier;
 	}

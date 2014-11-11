@@ -38,9 +38,11 @@ public class MeekanApi {
 
 	public static final String UTF_8 = "UTF-8";
 	// dontcommit
-	// public static final String API_URL = "http://192.168.1.20:8080/";
+	public static final String API_URL = "http://192.168.1.29:8080/";
 	// public static final String API_URL = "http://10.0.3.2:8080/";
-	public static final String API_URL = "https://playground.meekan.com/";
+	// public static final String API_URL = "https://playground.meekan.com/";
+	// public static final String API_URL = "https://newmeeting.meekan.com/";
+
 	public static URI API_URI;
 	static {
 		try {
@@ -126,6 +128,10 @@ public class MeekanApi {
 		return doApiRequest(ApiMethod.GET, "rest/hello", params);
 	}
 
+	public ApiRequestResponse updateUserProfile(Map<String, Collection<String>> params) throws MeekanApiException {
+		return doApiRequest(ApiMethod.PUT, "rest/users/current", params);
+	}
+
 	/**
 	 * Create a meeting for this specific account
 	 */
@@ -179,6 +185,12 @@ public class MeekanApi {
 		Map<String, Collection<String>> params = new HashMap<String, Collection<String>>();
 		params.put("q[]", idsOfAccounts);
 		return doApiRequest(ApiMethod.GET, "rest/accounts", params);
+	}
+
+	public ApiRequestResponse uploadContacts(Collection<String> idsOfAccounts) throws MeekanApiException {
+		Map<String, Collection<String>> params = new HashMap<String, Collection<String>>();
+		params.put("contacts", idsOfAccounts);
+		return doApiRequest(ApiMethod.PUT, "rest/users/current", params);
 	}
 
 	/**

@@ -48,7 +48,7 @@ public class MeekanParseUtils {
 			throws MeekanApiException {
 
 		ApiRequestResponse response = meekanApi.uploadContacts(idsOfAccounts);
-		if (HttpURLConnection.HTTP_OK == (int) response.getMeta().getCode()) {
+		if (HttpURLConnection.HTTP_OK == response.getMeta().getCode()) {
 			MapLikeType constructMapLikeType = Utils.getJSONObjectMapper().getTypeFactory()
 					.constructMapLikeType(HashMap.class, String.class, String.class);
 			try {
@@ -68,27 +68,30 @@ public class MeekanParseUtils {
 
 	}
 
-	public static String findAccountId(ApiRequestResponse authResponse, String email) {
-		try {
-			if (authResponse.getMeta().getCode() == HttpURLConnection.HTTP_OK) {
+	public static List<Account> getUserAccounts(ApiRequestResponse authResponse) {
+		if (authResponse.getMeta().getCode() == HttpURLConnection.HTTP_OK) {
 
-				User user = Utils.getJSONObjectMapper().readValue(authResponse.getResponse().get("data").toString(), User.class);
-				List<Account> accounts = user.getAccounts();
-				String accountId = null;
-				for (Account account : accounts) {
-					if (email.equals(account.getIdentifier())) {
-						accountId = account.getId();
-						break;
-					}
-				}
-				return accountId;
+			User user;
+			try {
+				user = Utils.getJSONObjectMapper().readValue(authResponse.getResponse().get("data").toString(), User.class);
+				return user.getAccounts();
+			} catch (JsonParseException e) {
+			} catch (JsonMappingException e) {
+			} catch (IOException e) {
 			}
-		} catch (JsonParseException e) {
-		} catch (JsonMappingException e) {
-		} catch (IOException e) {
 		}
 
 		return null;
+	}
 
+	public static String findAccountId(List<Account> accounts, String email, String accountType) {
+		String accountId = null;
+		for (Account account : accounts) {
+			if (email.equals(account.getIdentifier()) && accountType.equals(account.getType())) {
+				accountId = account.getId();
+				break;
+			}
+		}
+		return accountId;
 	}
 }

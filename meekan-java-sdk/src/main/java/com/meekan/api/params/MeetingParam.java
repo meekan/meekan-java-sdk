@@ -286,5 +286,24 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 		RepeatInterval(int intervalValue) {
 			this.intervalValue = intervalValue;
 		}
+
+		public static RepeatInterval fromValue(int intervalValue) {
+			switch (intervalValue) {
+			case 0:
+				return NOT_REPEATING;
+			case 1:
+				return DAILY;
+			case 7:
+				return WEEKLY;
+			case 14:
+				return BIWEEKLY;
+			case 31:
+				return MONTHLY;
+			case 365:
+				return YEARLY;
+			default:
+				return NOT_REPEATING;
+			}
+		}
 	}
 }
