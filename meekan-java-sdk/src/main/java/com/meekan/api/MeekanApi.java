@@ -128,6 +128,13 @@ public class MeekanApi {
 		return doApiRequest(ApiMethod.GET, "rest/hello", params);
 	}
 
+	public ApiRequestResponse inviteUsers(Collection<String> emails) throws MeekanApiException {
+		Map<String, Collection<String>> params = new HashMap<String, Collection<String>>();
+		params.put("emails", emails);
+		return doApiRequest(ApiMethod.POST, "rest/invite", params);
+
+	}
+
 	public ApiRequestResponse updateUserProfile(Map<String, Collection<String>> params) throws MeekanApiException {
 		return doApiRequest(ApiMethod.PUT, "rest/users/current", params);
 	}
