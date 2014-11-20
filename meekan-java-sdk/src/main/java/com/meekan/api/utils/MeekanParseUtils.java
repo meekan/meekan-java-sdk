@@ -44,10 +44,12 @@ public class MeekanParseUtils {
 		return null;
 	}
 
-	public static HashMap<String, String> uploadContactsAndGetIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts)
-			throws MeekanApiException {
+	public static HashMap<String, String> getIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts) throws MeekanApiException {
+		ApiRequestResponse response = meekanApi.getIdsToAccounts(idsOfAccounts);
+		return parseIdsToAccountResponse(response);
+	}
 
-		ApiRequestResponse response = meekanApi.uploadContacts(idsOfAccounts);
+	private static HashMap<String, String> parseIdsToAccountResponse(ApiRequestResponse response) throws MeekanApiException {
 		if (HttpURLConnection.HTTP_OK == response.getMeta().getCode()) {
 			MapLikeType constructMapLikeType = Utils.getJSONObjectMapper().getTypeFactory()
 					.constructMapLikeType(HashMap.class, String.class, String.class);
@@ -63,9 +65,14 @@ public class MeekanParseUtils {
 		} else {
 			throw new MeekanApiException(response.getMeta().getErrorDetail());
 		}
-
 		return new HashMap<String, String>();
+	}
 
+	public static HashMap<String, String> uploadContactsAndGetIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts)
+			throws MeekanApiException {
+
+		ApiRequestResponse response = meekanApi.uploadContacts(idsOfAccounts);
+		return parseIdsToAccountResponse(response);
 	}
 
 	public static List<Account> getUserAccounts(ApiRequestResponse authResponse) {
