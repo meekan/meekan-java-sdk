@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public class ExchangeAuthenticate implements Authenticate<String> {
 
+	private static final long serialVersionUID = -7989075042873002403L;
 	public static final String EXCHANGE = "exchange";
 	private String username;
 	private String email;
@@ -33,6 +34,10 @@ public class ExchangeAuthenticate implements Authenticate<String> {
 		this.email = email;
 		this.password = password;
 		this.url = url;
+	}
+
+	public ExchangeAuthenticate() {
+		// empty ctor
 	}
 
 	public String getUsername() {

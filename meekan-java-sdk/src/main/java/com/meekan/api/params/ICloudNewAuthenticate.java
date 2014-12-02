@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ICloudNewAuthenticate implements ICloudAuthenticate<String> {
+	private static final long serialVersionUID = 77354245414738913L;
+
 	public static final String ICLOUD = "icloud";
 
 	private String appleId;
@@ -14,6 +16,10 @@ public class ICloudNewAuthenticate implements ICloudAuthenticate<String> {
 	public ICloudNewAuthenticate(String appleId, String password) {
 		this.appleId = appleId;
 		this.password = password;
+	}
+
+	public ICloudNewAuthenticate() {
+		// empty ctor
 	}
 
 	public void setMmeAuthAndDsprsid(String mmeAuth, String dsprsid) {

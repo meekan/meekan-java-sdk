@@ -6,8 +6,22 @@
   <name>Meekan API</name>
   <description>SDK to the Meekan API</description>
   
+  <repositories>
+    <repository>
+      <id>mvn-public</id>
+      <name>MVNRepository</name>
+      <url>http://mvnrepository.com</url>
+    </repository>
+    
+    <repository>
+	  <id>central</id>
+	  <name>Maven Central</name>
+	  <url>http://repo1.maven.org/maven2</url>
+	</repository>
+  </repositories>
+  
   <dependencies>
-      
+  
       	<dependency>
 		    <groupId>com.googlecode.plist</groupId>
 		    <artifactId>dd-plist</artifactId>

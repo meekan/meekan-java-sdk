@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class ICloudOldAuthenticate implements ICloudAuthenticate<Object> {
 
+	private static final long serialVersionUID = 4436622421429826273L;
 	public static final String ICLOUD = "icloud";
 	private String username;
 	private String password;
@@ -31,6 +32,10 @@ public class ICloudOldAuthenticate implements ICloudAuthenticate<Object> {
 		this.username = username;
 		this.password = password;
 		this.icloudAppleId = icloudAppleId;
+	}
+
+	public ICloudOldAuthenticate() {
+		// empty ctor
 	}
 
 	public String getUsername() {

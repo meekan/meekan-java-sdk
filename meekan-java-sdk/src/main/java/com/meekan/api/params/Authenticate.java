@@ -1,5 +1,7 @@
 package com.meekan.api.params;
 
+import java.io.Serializable;
+
 /**
  * Used to perform authenticate to the Meekan server
  * 
@@ -7,7 +9,7 @@ package com.meekan.api.params;
  * @param <T>
  * 
  */
-public interface Authenticate<T> extends MeekanApiParams<T> {
+public interface Authenticate<T> extends MeekanApiParams<T>, Serializable {
 
 	public String getIdentifier();
 
