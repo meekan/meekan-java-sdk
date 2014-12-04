@@ -75,13 +75,11 @@ public class MeekanParseUtils {
 		return parseIdsToAccountResponse(response);
 	}
 
-	public static List<Account> getUserAccounts(ApiRequestResponse authResponse) {
+	public static User getUser(ApiRequestResponse authResponse) {
 		if (authResponse.getMeta().getCode() == HttpURLConnection.HTTP_OK) {
 
-			User user;
 			try {
-				user = Utils.getJSONObjectMapper().readValue(authResponse.getResponse().get("data").toString(), User.class);
-				return user.getAccounts();
+				return Utils.getJSONObjectMapper().readValue(authResponse.getResponse().get("data").toString(), User.class);
 			} catch (JsonParseException e) {
 			} catch (JsonMappingException e) {
 			} catch (IOException e) {

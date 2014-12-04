@@ -7,6 +7,7 @@ public class User implements MeekanEntity {
 	private static final long serialVersionUID = 3067873694906452502L;
 
 	private String primary_email;
+	private String primary_account;
 	private List<Account> accounts;
 	private String user_id;
 	private String name;
@@ -43,12 +44,21 @@ public class User implements MeekanEntity {
 		this.name = name;
 	}
 
+	public String getPrimary_account() {
+		return primary_account;
+	}
+
+	public void setPrimary_account(String primary_account) {
+		this.primary_account = primary_account;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((accounts == null) ? 0 : accounts.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((primary_account == null) ? 0 : primary_account.hashCode());
 		result = prime * result + ((primary_email == null) ? 0 : primary_email.hashCode());
 		result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
 		return result;
@@ -60,7 +70,7 @@ public class User implements MeekanEntity {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof User))
+		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
 		if (accounts == null) {
@@ -72,6 +82,11 @@ public class User implements MeekanEntity {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (primary_account == null) {
+			if (other.primary_account != null)
+				return false;
+		} else if (!primary_account.equals(other.primary_account))
 			return false;
 		if (primary_email == null) {
 			if (other.primary_email != null)
@@ -88,7 +103,8 @@ public class User implements MeekanEntity {
 
 	@Override
 	public String toString() {
-		return "User [primary_email=" + primary_email + ", accounts=" + accounts + ", user_id=" + user_id + ", name=" + name + "]";
+		return "User [primary_email=" + primary_email + ", primary_account=" + primary_account + ", accounts=" + accounts + ", user_id=" + user_id
+				+ ", name=" + name + "]";
 	}
 
 }
