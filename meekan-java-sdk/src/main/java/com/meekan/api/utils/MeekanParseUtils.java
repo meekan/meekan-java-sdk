@@ -70,7 +70,6 @@ public class MeekanParseUtils {
 
 	public static HashMap<String, String> uploadContactsAndGetIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts)
 			throws MeekanApiException {
-
 		ApiRequestResponse response = meekanApi.uploadContacts(idsOfAccounts);
 		return parseIdsToAccountResponse(response);
 	}

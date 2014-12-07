@@ -34,6 +34,7 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 	private String calendarId;
 	private List<String> options;
 	private String accountId;
+	private String notes;
 
 	public MeetingParam setInviteesEmails(List<String> inviteesEmails) {
 		this.inviteesEmails = inviteesEmails;
@@ -115,6 +116,11 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 		return this;
 	}
 
+	public MeetingParam setNotes(String notes) {
+		this.notes = notes;
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,6 +134,7 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 		result = prime * result + ((locationAddress == null) ? 0 : locationAddress.hashCode());
 		result = prime * result + ((locationDesc == null) ? 0 : locationDesc.hashCode());
 		result = prime * result + ((meetingName == null) ? 0 : meetingName.hashCode());
+		result = prime * result + ((notes == null) ? 0 : notes.hashCode());
 		result = prime * result + ((options == null) ? 0 : options.hashCode());
 		result = prime * result + ((reminderMethod == null) ? 0 : reminderMethod.hashCode());
 		result = prime * result + ((reminderMinutesBefore == null) ? 0 : reminderMinutesBefore.hashCode());
@@ -144,7 +151,7 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof MeetingParam))
+		if (getClass() != obj.getClass())
 			return false;
 		MeetingParam other = (MeetingParam) obj;
 		if (accountId == null) {
@@ -191,6 +198,11 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 			if (other.meetingName != null)
 				return false;
 		} else if (!meetingName.equals(other.meetingName))
+			return false;
+		if (notes == null) {
+			if (other.notes != null)
+				return false;
+		} else if (!notes.equals(other.notes))
 			return false;
 		if (options == null) {
 			if (other.options != null)
@@ -262,6 +274,7 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 			params.put("opt[]", options);
 		}
 		putIfNotNull(params, "account_id", accountId);
+		putIfNotNull(params, "notes", notes);
 
 		return params;
 	}
