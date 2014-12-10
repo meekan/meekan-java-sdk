@@ -227,7 +227,7 @@ public class MeekanApi {
 	 * 
 	 */
 	public ApiRequestResponse getSlots(Collection<String> invitees, int duration, String organizerAccountId,
-			List<SerializablePair<Long, Long>> startEndFrames, int page) throws MeekanApiException {
+			List<SerializablePair<Long, Long>> startEndFrames, String timezone, String timeDesc, String dayDesc, int page) throws MeekanApiException {
 		Map<String, Collection<String>> params = new HashMap<String, Collection<String>>();
 		params.put("invitees[]", invitees);
 		params.put("duration", Collections.singleton(String.valueOf(duration)));
@@ -237,14 +237,17 @@ public class MeekanApi {
 			frames.add(String.format("%s:%s", startEndFrame.first, startEndFrame.second));
 		}
 		params.put("frames[]", frames);
+		params.put("timezone", Collections.singleton(timezone));
+		params.put("time_desc", Collections.singleton(timeDesc));
+		params.put("day_desc", Collections.singleton(dayDesc));
 		params.put("page", Collections.singleton(String.valueOf(page)));
 
 		return doApiRequest(ApiMethod.GET, "rest/slots", params);
 	}
 
 	public ApiRequestResponse getSlots(Collection<String> invitees, int duration, String organizerAccountId,
-			List<SerializablePair<Long, Long>> startEndFrames) throws MeekanApiException {
-		return getSlots(invitees, duration, organizerAccountId, startEndFrames, 0);
+			List<SerializablePair<Long, Long>> startEndFrames, String timezone, String timeDesc, String dayDesc) throws MeekanApiException {
+		return getSlots(invitees, duration, organizerAccountId, startEndFrames, timezone, timeDesc, dayDesc, 0);
 	}
 
 	public ApiRequestResponse deleteAccount(String accountId) throws MeekanApiException {
