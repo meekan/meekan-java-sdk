@@ -242,7 +242,7 @@ public class MeekanApi {
 		params.put("day_desc", Collections.singleton(dayDesc));
 		params.put("page", Collections.singleton(String.valueOf(page)));
 
-		return doApiRequest(ApiMethod.GET, "rest/slots", params);
+		return doApiRequest(ApiMethod.POST, "rest/slots", params);
 	}
 
 	public ApiRequestResponse getSlots(Collection<String> invitees, int duration, String organizerAccountId,
