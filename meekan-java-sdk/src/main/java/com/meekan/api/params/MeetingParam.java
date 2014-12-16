@@ -2,6 +2,7 @@ package com.meekan.api.params;
 
 import static com.meekan.api.utils.Utils.putIfNotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,8 +57,11 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 		return this;
 	}
 
-	public MeetingParam setSlots(List<String> slots) {
-		this.slots = slots;
+	public MeetingParam setSlots(List<SerializablePair<Long, Long>> slots) {
+		this.slots = new ArrayList<String>();
+		for (SerializablePair<Long, Long> startEndFrame : slots) {
+			this.slots.add(String.format("%s:%s", startEndFrame.first, startEndFrame.second));
+		}
 		return this;
 	}
 

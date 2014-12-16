@@ -22,16 +22,19 @@ public class Slot implements MeekanEntity {
 		return rank;
 	}
 
-	public void setNot_available(List<Long> not_available) {
+	public Slot setNot_available(List<Long> not_available) {
 		this.not_available = not_available;
+		return this;
 	}
 
-	public void setStart(Long start) {
+	public Slot setStart(Long start) {
 		this.start = start;
+		return this;
 	}
 
-	public void setRank(Long rank) {
+	public Slot setRank(Long rank) {
 		this.rank = rank;
+		return this;
 	}
 
 	@Override
