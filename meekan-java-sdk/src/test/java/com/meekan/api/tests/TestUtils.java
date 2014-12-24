@@ -20,6 +20,7 @@ import com.meekan.api.MeekanApiException;
 import com.meekan.api.entities.Account;
 import com.meekan.api.entities.User;
 import com.meekan.api.params.ExchangeAuthenticate;
+import com.meekan.api.params.ICloudNewAuthenticate;
 import com.meekan.api.params.ICloudOldAuthenticate;
 import com.meekan.api.utils.Utils;
 
@@ -67,6 +68,11 @@ public class TestUtils {
 		JsonNode exchangeNode = Utils.getJSONObjectMapper().readTree(new File(AUTH_CONFIG_FILE)).get("exchange");
 		return new ExchangeAuthenticate(exchangeNode.get("username").asText(), exchangeNode.get("email").asText(), exchangeNode.get("password")
 				.asText(), exchangeNode.get("url").asText());
+	}
+
+	public static ICloudNewAuthenticate getICloudNewAuthenticate() throws JsonProcessingException, IOException {
+		JsonNode jsonNode = Utils.getJSONObjectMapper().readTree(new File(AUTH_CONFIG_FILE)).get("new_icloud");
+		return Utils.getJSONObjectMapper().readValue(jsonNode.toString(), ICloudNewAuthenticate.class);
 	}
 
 	public static ICloudOldAuthenticate getICloudAuthenticate() throws JsonProcessingException, IOException {
