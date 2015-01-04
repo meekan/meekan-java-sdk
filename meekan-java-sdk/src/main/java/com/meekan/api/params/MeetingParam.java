@@ -59,8 +59,10 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 
 	public MeetingParam setSlots(List<SerializablePair<Long, Long>> slots) {
 		this.slots = new ArrayList<String>();
-		for (SerializablePair<Long, Long> startEndFrame : slots) {
-			this.slots.add(String.format("%s:%s", startEndFrame.first, startEndFrame.second));
+		if (slots != null) {
+			for (SerializablePair<Long, Long> startEndFrame : slots) {
+				this.slots.add(String.format("%s:%s", startEndFrame.first, startEndFrame.second));
+			}
 		}
 		return this;
 	}
