@@ -55,7 +55,7 @@ public class SlotsTest {
 		Collection<String> invitees = TestUtils.getIdentifierToAccount(meekanApi, idsOfAccounts).values();
 		List<SerializablePair<Long, Long>> frames = Arrays.asList(new SerializablePair<Long, Long>(meetingTime, meetingTime
 				+ (durationInMinutes * 100)));
-		ApiRequestResponse slotsResponse = meekanApi.getSlots(invitees, 1, accountId, frames, "Asia/Jerusalem", "", "");
+		ApiRequestResponse slotsResponse = meekanApi.getSlots(invitees, 1, accountId, frames, "Asia/Jerusalem", "", "", null, false);
 		TestUtils.checkResponse(slotsResponse);
 		CollectionLikeType constructCollectionLikeType = Utils.getJSONObjectMapper().getTypeFactory()
 				.constructCollectionType(ArrayList.class, Slot.class);

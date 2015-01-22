@@ -9,6 +9,8 @@ public class Slot implements MeekanEntity {
 	private List<Long> not_available;
 	private Long start;
 	private Long rank;
+	private Integer padding_before;
+	private Integer padding_after;
 
 	public List<Long> getNot_available() {
 		return not_available;
@@ -37,11 +39,29 @@ public class Slot implements MeekanEntity {
 		return this;
 	}
 
+	public Integer getPadding_before() {
+		return padding_before;
+	}
+
+	public void setPadding_before(Integer padding_before) {
+		this.padding_before = padding_before;
+	}
+
+	public Integer getPadding_after() {
+		return padding_after;
+	}
+
+	public void setPadding_after(Integer padding_after) {
+		this.padding_after = padding_after;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((not_available == null) ? 0 : not_available.hashCode());
+		result = prime * result + ((padding_after == null) ? 0 : padding_after.hashCode());
+		result = prime * result + ((padding_before == null) ? 0 : padding_before.hashCode());
 		result = prime * result + ((rank == null) ? 0 : rank.hashCode());
 		result = prime * result + ((start == null) ? 0 : start.hashCode());
 		return result;
@@ -53,13 +73,23 @@ public class Slot implements MeekanEntity {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Slot))
+		if (getClass() != obj.getClass())
 			return false;
 		Slot other = (Slot) obj;
 		if (not_available == null) {
 			if (other.not_available != null)
 				return false;
 		} else if (!not_available.equals(other.not_available))
+			return false;
+		if (padding_after == null) {
+			if (other.padding_after != null)
+				return false;
+		} else if (!padding_after.equals(other.padding_after))
+			return false;
+		if (padding_before == null) {
+			if (other.padding_before != null)
+				return false;
+		} else if (!padding_before.equals(other.padding_before))
 			return false;
 		if (rank == null) {
 			if (other.rank != null)
@@ -76,7 +106,8 @@ public class Slot implements MeekanEntity {
 
 	@Override
 	public String toString() {
-		return "Slot [not_available=" + not_available + ", start=" + start + ", rank=" + rank + "]";
+		return "Slot [not_available=" + not_available + ", start=" + start + ", rank=" + rank + ", padding_before=" + padding_before
+				+ ", padding_after=" + padding_after + "]";
 	}
 
 }
