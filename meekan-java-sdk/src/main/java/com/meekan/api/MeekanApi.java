@@ -227,7 +227,8 @@ public class MeekanApi {
 	 * 
 	 */
 	public ApiRequestResponse getSlots(Collection<String> invitees, int duration, String organizerAccountId,
-			List<SerializablePair<Long, Long>> startEndFrames, String timezone, String timeDesc, String dayDesc, int page) throws MeekanApiException {
+			List<SerializablePair<Long, Long>> startEndFrames, String timezone, String timeDesc, String dayDesc, String locationLatLong,
+			boolean useLocationPadding, int page) throws MeekanApiException {
 		Map<String, Collection<String>> params = new HashMap<String, Collection<String>>();
 		params.put("invitees[]", invitees);
 		params.put("duration", Collections.singleton(String.valueOf(duration)));
@@ -240,14 +241,21 @@ public class MeekanApi {
 		params.put("timezone", Collections.singleton(timezone));
 		params.put("time_desc", Collections.singleton(timeDesc));
 		params.put("day_desc", Collections.singleton(dayDesc));
+		if (locationLatLong != null) {
+			params.put("location_latlong", Collections.singleton(locationLatLong));
+		}
+		if (useLocationPadding) {
+			params.put("use_location_padding", Collections.singleton(Boolean.toString(useLocationPadding)));
+		}
 		params.put("page", Collections.singleton(String.valueOf(page)));
 
 		return doApiRequest(ApiMethod.POST, "rest/slots", params);
 	}
 
 	public ApiRequestResponse getSlots(Collection<String> invitees, int duration, String organizerAccountId,
-			List<SerializablePair<Long, Long>> startEndFrames, String timezone, String timeDesc, String dayDesc) throws MeekanApiException {
-		return getSlots(invitees, duration, organizerAccountId, startEndFrames, timezone, timeDesc, dayDesc, 0);
+			List<SerializablePair<Long, Long>> startEndFrames, String timezone, String timeDesc, String dayDesc, String locationLatLong,
+			boolean useLocationPadding) throws MeekanApiException {
+		return getSlots(invitees, duration, organizerAccountId, startEndFrames, timezone, timeDesc, dayDesc, locationLatLong, useLocationPadding, 0);
 	}
 
 	public ApiRequestResponse deleteAccount(String accountId) throws MeekanApiException {

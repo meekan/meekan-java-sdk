@@ -43,16 +43,18 @@ public class Slot implements MeekanEntity {
 		return padding_before;
 	}
 
-	public void setPadding_before(Integer padding_before) {
+	public Slot setPadding_before(Integer padding_before) {
 		this.padding_before = padding_before;
+		return this;
 	}
 
 	public Integer getPadding_after() {
 		return padding_after;
 	}
 
-	public void setPadding_after(Integer padding_after) {
+	public Slot setPadding_after(Integer padding_after) {
 		this.padding_after = padding_after;
+		return this;
 	}
 
 	@Override

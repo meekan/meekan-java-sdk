@@ -90,7 +90,10 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 	public MeetingParam setLatLng(String latLng) {
 		if (latLng != null) {
 			String[] split = latLng.split(",");
-			this.latLng = new SerializablePair<Double, Double>(Double.valueOf(split[0]), Double.valueOf(split[1]));
+			try {
+				this.latLng = new SerializablePair<Double, Double>(Double.valueOf(split[0]), Double.valueOf(split[1]));
+			} catch (NumberFormatException e) {
+			}
 		}
 		return this;
 	}

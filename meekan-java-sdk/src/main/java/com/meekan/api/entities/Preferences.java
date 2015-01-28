@@ -26,6 +26,8 @@ public class Preferences implements MeekanEntity {
 	private List<Integer> weekends;
 	private List<Integer> workdays;
 
+	private boolean is_driving_padding;
+
 	public Preferences() {
 	}
 
@@ -182,6 +184,25 @@ public class Preferences implements MeekanEntity {
 		return this;
 	}
 
+	public boolean isIs_driving_padding() {
+		return is_driving_padding;
+	}
+
+	public Preferences setIs_driving_padding(boolean is_driving_padding) {
+		this.is_driving_padding = is_driving_padding;
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "Preferences [available_contacts=" + available_contacts + ", available_periods=" + available_periods + ", busy_contacts="
+				+ busy_contacts + ", busy_periods=" + busy_periods + ", daily_meeting_limit=" + daily_meeting_limit + ", day_ranges=" + day_ranges
+				+ ", disabled_email_keys=" + disabled_email_keys + ", disabled_push_keys=" + disabled_push_keys + ", grouping=" + grouping
+				+ ", is_ml_on=" + is_ml_on + ", is_night_worker=" + is_night_worker + ", locations=" + locations + ", paddingTime=" + paddingTime
+				+ ", people_limit=" + people_limit + ", timezone=" + timezone + ", weekends=" + weekends + ", workdays=" + workdays
+				+ ", is_driving_padding=" + is_driving_padding + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -195,6 +216,7 @@ public class Preferences implements MeekanEntity {
 		result = prime * result + ((disabled_email_keys == null) ? 0 : disabled_email_keys.hashCode());
 		result = prime * result + ((disabled_push_keys == null) ? 0 : disabled_push_keys.hashCode());
 		result = prime * result + ((grouping == null) ? 0 : grouping.hashCode());
+		result = prime * result + (is_driving_padding ? 1231 : 1237);
 		result = prime * result + (is_ml_on ? 1231 : 1237);
 		result = prime * result + (is_night_worker ? 1231 : 1237);
 		result = prime * result + ((locations == null) ? 0 : locations.hashCode());
@@ -254,6 +276,8 @@ public class Preferences implements MeekanEntity {
 			return false;
 		if (grouping != other.grouping)
 			return false;
+		if (is_driving_padding != other.is_driving_padding)
+			return false;
 		if (is_ml_on != other.is_ml_on)
 			return false;
 		if (is_night_worker != other.is_night_worker)
@@ -283,15 +307,6 @@ public class Preferences implements MeekanEntity {
 		} else if (!workdays.equals(other.workdays))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Preferences [available_contacts=" + available_contacts + ", available_periods=" + available_periods + ", busy_contacts="
-				+ busy_contacts + ", busy_periods=" + busy_periods + ", daily_meeting_limit=" + daily_meeting_limit + ", day_ranges=" + day_ranges
-				+ ", disabled_email_keys=" + disabled_email_keys + ", disabled_push_keys=" + disabled_push_keys + ", grouping=" + grouping
-				+ ", is_ml_on=" + is_ml_on + ", is_night_worker=" + is_night_worker + ", locations=" + locations + ", paddingTime=" + paddingTime
-				+ ", people_limit=" + people_limit + ", timezone=" + timezone + ", weekends=" + weekends + ", workdays=" + workdays + "]";
 	}
 
 }
