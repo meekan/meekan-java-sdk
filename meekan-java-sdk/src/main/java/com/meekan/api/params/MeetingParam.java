@@ -2,6 +2,7 @@ package com.meekan.api.params;
 
 import static com.meekan.api.utils.Utils.putIfNotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,7 +19,9 @@ import com.meekan.api.utils.Utils;
  * @author idog
  * 
  */
-public class MeetingParam implements MeekanApiParams<Collection<String>> {
+public class MeetingParam implements MeekanApiParams<Collection<String>>, Serializable {
+
+	private static final long serialVersionUID = 6460502765146279041L;
 	private List<String> inviteesEmails;
 	private List<String> inviteesKeys;
 	private Integer durationInMinutes;
@@ -131,6 +134,10 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 	public MeetingParam setAccountId(String accountId) {
 		this.accountId = accountId;
 		return this;
+	}
+
+	public String getAccountId() {
+		return accountId;
 	}
 
 	public MeetingParam setNotes(String notes) {
@@ -335,5 +342,69 @@ public class MeetingParam implements MeekanApiParams<Collection<String>> {
 				return NOT_REPEATING;
 			}
 		}
+	}
+
+	public List<String> getSlots() {
+		return slots;
+	}
+
+	public List<String> getInviteesEmails() {
+		return inviteesEmails;
+	}
+
+	public List<String> getInviteesKeys() {
+		return inviteesKeys;
+	}
+
+	public Integer getDurationInMinutes() {
+		return durationInMinutes;
+	}
+
+	public String getTimeSlotDescription() {
+		return timeSlotDescription;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public String getMeetingName() {
+		return meetingName;
+	}
+
+	public String getLocationDesc() {
+		return locationDesc;
+	}
+
+	public String getLocationAddress() {
+		return locationAddress;
+	}
+
+	public SerializablePair<Double, Double> getLatLng() {
+		return latLng;
+	}
+
+	public Integer getReminderMinutesBefore() {
+		return reminderMinutesBefore;
+	}
+
+	public String getReminderMethod() {
+		return reminderMethod;
+	}
+
+	public RepeatInterval getRepeatInterval() {
+		return repeatInterval;
+	}
+
+	public String getCalendarId() {
+		return calendarId;
+	}
+
+	public List<String> getOptions() {
+		return options;
+	}
+
+	public String getNotes() {
+		return notes;
 	}
 }

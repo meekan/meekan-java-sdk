@@ -11,6 +11,24 @@ public class Slot implements MeekanEntity {
 	private Long rank;
 	private Integer padding_before;
 	private Integer padding_after;
+	private MeetingForSlot meeting_before;
+	private MeetingForSlot meeting_after;
+
+	public MeetingForSlot getMeeting_before() {
+		return meeting_before;
+	}
+
+	public void setMeeting_before(MeetingForSlot meeting_before) {
+		this.meeting_before = meeting_before;
+	}
+
+	public MeetingForSlot getMeeting_after() {
+		return meeting_after;
+	}
+
+	public void setMeeting_after(MeetingForSlot meeting_after) {
+		this.meeting_after = meeting_after;
+	}
 
 	public List<Long> getNot_available() {
 		return not_available;
@@ -61,6 +79,8 @@ public class Slot implements MeekanEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((meeting_after == null) ? 0 : meeting_after.hashCode());
+		result = prime * result + ((meeting_before == null) ? 0 : meeting_before.hashCode());
 		result = prime * result + ((not_available == null) ? 0 : not_available.hashCode());
 		result = prime * result + ((padding_after == null) ? 0 : padding_after.hashCode());
 		result = prime * result + ((padding_before == null) ? 0 : padding_before.hashCode());
@@ -78,6 +98,16 @@ public class Slot implements MeekanEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		Slot other = (Slot) obj;
+		if (meeting_after == null) {
+			if (other.meeting_after != null)
+				return false;
+		} else if (!meeting_after.equals(other.meeting_after))
+			return false;
+		if (meeting_before == null) {
+			if (other.meeting_before != null)
+				return false;
+		} else if (!meeting_before.equals(other.meeting_before))
+			return false;
 		if (not_available == null) {
 			if (other.not_available != null)
 				return false;
@@ -109,7 +139,7 @@ public class Slot implements MeekanEntity {
 	@Override
 	public String toString() {
 		return "Slot [not_available=" + not_available + ", start=" + start + ", rank=" + rank + ", padding_before=" + padding_before
-				+ ", padding_after=" + padding_after + "]";
+				+ ", padding_after=" + padding_after + ", meeting_before=" + meeting_before + ", meeting_after=" + meeting_after + "]";
 	}
 
 }
