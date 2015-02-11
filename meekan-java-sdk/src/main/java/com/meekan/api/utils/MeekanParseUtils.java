@@ -11,11 +11,13 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.meekan.api.ApiRequestResponse;
 import com.meekan.api.MeekanApi;
 import com.meekan.api.MeekanApiException;
 import com.meekan.api.entities.Account;
+import com.meekan.api.entities.Meeting;
 import com.meekan.api.entities.Slot;
 import com.meekan.api.entities.User;
 
@@ -23,6 +25,28 @@ public class MeekanParseUtils {
 
 	public static boolean checkApiCall(ApiRequestResponse response) {
 		return response != null && response.getMeta() != null && response.getMeta().getCode() == HttpURLConnection.HTTP_OK;
+	}
+
+	public static List<Meeting> getMeetings(ApiRequestResponse meetingsResponse) {
+		CollectionType constructCollectionType = Utils.getJSONObjectMapper().getTypeFactory().constructCollectionType(List.class, Meeting.class);
+		try {
+			JsonNode jsonNode = meetingsResponse.getResponse().get("data");
+			if (jsonNode != null) {
+				List<Meeting> res;
+				JsonNode meetingsNode = jsonNode.get("meetings");
+				if (meetingsNode != null) {
+					res = Utils.getJSONObjectMapper().readValue(meetingsNode.toString(), constructCollectionType);
+				} else {
+					res = new ArrayList<Meeting>();
+				}
+				return res;
+			}
+
+		} catch (JsonParseException e) {
+		} catch (JsonMappingException e) {
+		} catch (IOException e) {
+		}
+		return null;
 	}
 
 	public static List<Slot> getSlots(ApiRequestResponse slotsResponse) {
