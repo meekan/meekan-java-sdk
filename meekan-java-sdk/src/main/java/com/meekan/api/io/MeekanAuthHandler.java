@@ -33,6 +33,7 @@ import com.meekan.api.params.ICloudNewAuthenticate;
 import com.meekan.api.params.ICloudOldAuthenticate;
 import com.meekan.api.params.ICloudServerEntity;
 import com.meekan.api.params.MeekanSessionCookies;
+import com.meekan.api.params.Office365Authenticate;
 import com.meekan.api.utils.HttpUtils;
 import com.meekan.api.utils.Utils;
 
@@ -280,6 +281,18 @@ public class MeekanAuthHandler implements AuthHandler {
 		callParams.put("gv", Collections.singleton("mobile"));
 		try {
 			return HttpUtils.doApiRequest(ApiMethod.GET, "social_login/google_oauth2/complete", callParams, ioHandler);
+		} catch (MeekanApiException e) {
+			return new ApiRequestResponse(new ResultMeta(500, "", e.getMessage()), null);
+		}
+	}
+
+	@Override
+	public ApiRequestResponse office365Authenticate(Office365Authenticate officeAuthenticate) {
+		Map<String, Collection<String>> callParams = new HashMap<String, Collection<String>>();
+		callParams.put("code", Collections.singleton(officeAuthenticate.getCode()));
+		callParams.put("gv", Collections.singleton("mobile"));
+		try {
+			return HttpUtils.doApiRequest(ApiMethod.GET, "social_login/office365_oauth2/complete", callParams, ioHandler);
 		} catch (MeekanApiException e) {
 			return new ApiRequestResponse(new ResultMeta(500, "", e.getMessage()), null);
 		}

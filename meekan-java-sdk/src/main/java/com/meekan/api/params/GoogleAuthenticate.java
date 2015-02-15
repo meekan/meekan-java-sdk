@@ -5,7 +5,7 @@ import java.util.Map;
 public class GoogleAuthenticate implements Authenticate<String> {
 
 	private static final long serialVersionUID = -2266932591450585772L;
-	private static final String PROVIDER = "GOOGLE_OUATH2";
+	private static final String PROVIDER = "GOOGLE_OAUTH2";
 	private String email;
 	private String code;
 

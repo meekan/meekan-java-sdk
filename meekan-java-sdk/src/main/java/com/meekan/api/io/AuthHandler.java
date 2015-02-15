@@ -5,6 +5,7 @@ import com.meekan.api.params.ExchangeAuthenticate;
 import com.meekan.api.params.GoogleAuthenticate;
 import com.meekan.api.params.ICloudAuthenticate;
 import com.meekan.api.params.MeekanSessionCookies;
+import com.meekan.api.params.Office365Authenticate;
 
 /**
  * Interface for all the authenticates for Meekan
@@ -35,5 +36,7 @@ public interface AuthHandler {
 	 *            - MeeekanCookies that came from other place (like webview)
 	 */
 	public void cookiesAuthenticate(MeekanSessionCookies cookies);
+
+	public ApiRequestResponse office365Authenticate(Office365Authenticate officeAuthenticate);
 
 }
