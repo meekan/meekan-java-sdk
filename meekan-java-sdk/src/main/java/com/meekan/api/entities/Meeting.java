@@ -13,7 +13,8 @@ public class Meeting implements MeekanEntity {
 	private String location_latlong;
 	private String location_address;
 	private Integer reminder_minutes_before;
-	private Long last_update;
+	private Double last_update;
+	private Double create_time;
 	private List<String> invitees;
 	private Map<String, Vote> votes;
 	private String reminder_method;
@@ -33,8 +34,12 @@ public class Meeting implements MeekanEntity {
 		return timezone;
 	}
 
-	public Long getLast_update() {
+	public Double getLast_update() {
 		return last_update;
+	}
+
+	public Double getCreate_time() {
+		return create_time;
 	}
 
 	public List<String> getInvitees() {
@@ -97,8 +102,12 @@ public class Meeting implements MeekanEntity {
 		this.timezone = timezone;
 	}
 
-	public void setLast_update(Long last_update) {
+	public void setLast_update(Double last_update) {
 		this.last_update = last_update;
+	}
+
+	public void setCreate_time(Double create_time) {
+		this.create_time = create_time;
 	}
 
 	public void setInvitees(List<String> invitees) {

@@ -69,8 +69,12 @@ public class MeekanParseUtils {
 	}
 
 	public static HashMap<String, String> getIdentifierToAccount(MeekanApi meekanApi, Collection<String> idsOfAccounts) throws MeekanApiException {
-		ApiRequestResponse response = meekanApi.getIdsToAccounts(idsOfAccounts);
-		return parseIdsToAccountResponse(response);
+		if (idsOfAccounts != null && idsOfAccounts.size() > 0) {
+			ApiRequestResponse response = meekanApi.getIdsToAccounts(idsOfAccounts);
+			return parseIdsToAccountResponse(response);
+		}
+
+		return new HashMap<String, String>();
 	}
 
 	private static HashMap<String, String> parseIdsToAccountResponse(ApiRequestResponse response) throws MeekanApiException {
